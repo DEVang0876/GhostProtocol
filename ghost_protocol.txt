@@ -1,0 +1,558 @@
+#include&lt;iostream&gt;
+#include&lt;queue&gt;
+using namespace std;
+
+
+
+struct Node{
+int data;
+Node* l;
+Node* r;
+Node(int d) {
+data = d;
+l = NULL;
+r = NULL;
+}
+};
+
+
+
+void insertleft(Node* &amp;root, int v) {
+if (!root) root = new Node(v);
+else if (!root-&gt;l) root-&gt;l = new Node(v);
+else cout &lt;&lt; &quot;element inserted left &quot; &lt;&lt; endl;
+}
+
+
+void deleteleft(Node* &amp;root) {
+if (root &amp;&amp; root-&gt;l) {
+delete root-&gt;l;
+root-&gt;l = NULL;
+cout &lt;&lt; &quot;Left node deleted.&quot; &lt;&lt; endl;
+} else cout &lt;&lt; &quot;Left node not found....&quot; &lt;&lt; endl;
+}
+
+
+void inorder_trav(Node* root) {
+if (!root) return;
+inorder_trav(root-&gt;l);
+cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+inorder_trav(root-&gt;r);
+}
+
+
+void preorder_trav(Node* root) {
+if (!root) return;
+cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+preorder_trav(root-&gt;l);
+preorder_trav(root-&gt;r);
+}
+
+
+void postorder_trav(Node* root) {
+if (!root) return;
+postorder_trav(root-&gt;l);
+postorder_trav(root-&gt;r);
+cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+}
+
+
+void printLvl(Node* root, int lvl) {
+if (!root) return;
+if (lvl == 1) cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+else if (lvl &gt; 1) {
+printLvl(root-&gt;l, lvl - 1);
+printLvl(root-&gt;r, lvl - 1);
+}
+}
+
+
+int height(Node* n) {
+if (!n) return 0;
+int lh = height(n-&gt;l);
+int rh = height(n-&gt;r);
+return (lh &gt; rh) ? (lh + 1) : (rh + 1);
+}
+
+
+void levalorder_trav(Node* root) {
+int ht = height(root);
+for (int i = 1; i &lt;= ht; i++) printLvl(root, i);
+}
+
+
+
+int maxDepth(Node* n) {
+if (n == nullptr) return 0;
+int leftDepth = maxDepth(n-&gt;l);
+int rightDepth = maxDepth(n-&gt;r);
+return max(leftDepth, rightDepth) + 1;
+}
+
+
+void right_view(Node* root, int level, int* maxLevel) {
+if (!root) return;
+if (*maxLevel &lt; level) {
+cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+*maxLevel = level;
+}
+right_view(root-&gt;r, level + 1, maxLevel);
+right_view(root-&gt;l, level + 1, maxLevel);
+}
+void rightView(Node* root) {
+int maxLevel = 0;
+right_view(root, 1, &amp;maxLevel);
+}
+
+struct Node {
+int data;
+Node* l;
+Node* r;
+Node(int v) {
+data = v;
+l = r = NULL;
+}
+};
+
+
+void printLeftBoundary(Node* root) {
+Node* curr = root-&gt;l;
+while (curr) {
+if (curr-&gt;l || curr-&gt;r)
+cout &lt;&lt; curr-&gt;data &lt;&lt; &quot; &quot;;
+if (curr-&gt;l)
+curr = curr-&gt;l;
+else
+curr = curr-&gt;r;
+}
+}
+void printLeaves(Node* root) {
+if (!root) return;
+printLeaves(root-&gt;l);
+if (!root-&gt;l &amp;&amp; !root-&gt;r)
+cout &lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;;
+printLeaves(root-&gt;r);
+}
+void printRightBoundary(Node* root) {
+Node* curr = root-&gt;r;
+int arr[100], idx = 0;
+while (curr) {
+if (curr-&gt;l || curr-&gt;r)
+arr[idx++] = curr-&gt;data;
+if (curr-&gt;r)
+curr = curr-&gt;r;
+else
+curr = curr-&gt;l;
+}
+for (int i = idx - 1; i &gt;= 0; i--)
+cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+}
+
+void printBoundary(Node* root) {
+if (!root) return;
+cout &lt;&lt;&quot;root :&quot;&lt;&lt; root-&gt;data &lt;&lt; &quot; &quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;Left Boundary : &quot;;
+printLeftBoundary(root);
+cout&lt;&lt;endl&lt;&lt;&quot;Leaf Nodes : &quot;;
+printLeaves(root);
+cout&lt;&lt;endl;
+cout&lt;&lt;&quot;Right Boundary : &quot;;;
+printRightBoundary(root);
+cout&lt;&lt;endl;
+}
+
+
+
+void inorderTraversal(node* root, int&amp; k, int&amp; res) {
+if (root==NULL) {return;}
+inorderTraversal(root-&gt;left, k, res);
+k--;
+if (k == 0){
+res = root-&gt;data;
+}
+inorderTraversal(root-&gt;right, k, res);
+}
+int kthSmallest(node* root, int k) {
+int res = -1;
+inorderTraversal(root, k, res);
+return res;
+}
+
+
+
+void dfs(int node, vector&lt;int&gt; adj[], vector&lt;bool&gt; &amp;visited) {
+visited[node] = true;
+cout &lt;&lt; node &lt;&lt; &quot; &quot;;
+
+for(int i = 0; i &lt; adj[node].size(); i++) {
+int neighbor = adj[node][i];
+if (!visited[neighbor]) {
+dfs(neighbor, adj, visited);
+}
+}
+}
+
+
+void bfs(int start, int adj[][5], bool visited[], int V) {
+queue&lt;int&gt; q;
+q.push(start);
+visited[start] = true;
+while (!q.empty()) {
+int node = q.front();
+q.pop();
+cout &lt;&lt; node &lt;&lt; &quot; &quot;;
+for (int i = 0; i &lt; V; i++) {
+if (adj[node][i] == 1 &amp;&amp; !visited[i]) {
+q.push(i);
+visited[i] = true;
+
+}
+}
+}
+}
+
+int main() {
+int V = 5;
+int adj[5][5] = { {0, 1, 1, 1, 0},
+{0, 0, 0, 0, 1},
+{0, 0, 0, 0, 0},
+{0, 0, 0, 0, 1},
+{0, 0, 0, 0, 0} };
+bool visited[5] = {false};
+bfs(0, adj, visited, V);
+return 0;
+}
+
+
+
+
+/* infix to postfix using custom stack
+
+*/
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+#define MAX 1000
+struct CustomStack {
+int top;
+char arr[MAX];
+CustomStack() {
+top = -1;
+}
+void push(char c) {
+if (top &gt;= (MAX - 1)) {
+cout &lt;&lt; &quot;Stack Overflow\n&quot;;
+return;
+}
+arr[++top] = c;
+}
+char pop() {
+if (top &lt; 0) {
+cout &lt;&lt; &quot;Stack Underflow\n&quot;;
+return &#39;\0&#39;;
+}
+return arr[top--];
+}
+char peek() {
+if (top &lt; 0) {
+cout &lt;&lt; &quot;Stack is Empty\n&quot;;
+return &#39;\0&#39;;
+}
+return arr[top];
+}
+bool isEmpty() {
+return top == -1;
+}
+};
+int precedence(char op) {
+if (op == &#39;+&#39; || op == &#39;-&#39;) return 1;
+if (op == &#39;*&#39; || op == &#39;/&#39;) return 2;
+return 0;
+}
+string infixToPostfix(string exp) {
+CustomStack st;
+string result;
+for (int i = 0; i &lt; exp.length(); i++) {
+char c = exp[i];
+if (isalnum(c)) {
+result += c;
+} else if (c == &#39;(&#39;) {
+st.push(c);
+} else if (c == &#39;)&#39;) {
+while (!st.isEmpty() &amp;&amp; st.peek() != &#39;(&#39;) {
+result += st.pop();
+}
+st.pop();
+} else {
+while (!st.isEmpty() &amp;&amp; precedence(st.peek()) &gt;= precedence(c)) {
+result += st.pop();
+}
+st.push(c);
+}
+}
+while (!st.isEmpty()) {
+result += st.pop();
+}
+return result;
+}
+int main() {
+string infix = &quot;A+B*C+D&quot;;
+cout &lt;&lt; infixToPostfix(infix) &lt;&lt; endl;
+return 0;
+}
+
+
+
+
+
+/*POstfic evaluation using stack
+By Om Choksi 23aiml010
+*/
+#include &lt;iostream&gt;
+using namespace std;
+#define MAX 1000
+struct CustomStack {
+int top;
+int arr[MAX];
+CustomStack() { top = -1; }
+void push(int x) {
+if (top &gt;= MAX - 1) {
+cout &lt;&lt; &quot;Stack Overflow\n&quot;;
+return;
+}
+arr[++top] = x;
+}
+int pop() {
+if (top &lt; 0) {
+cout &lt;&lt; &quot;Stack Underflow\n&quot;;
+return -1;
+}
+return arr[top--];
+}
+bool isEmpty() {
+return (top &lt; 0);
+}
+int peek() {
+if (top &lt; 0) {
+cout &lt;&lt; &quot;Stack is Empty\n&quot;;
+return -1;
+}
+return arr[top];
+}
+};
+int evaluatePostfix(string exp) {
+CustomStack st;
+for (char c : exp) {
+if (isdigit(c)) {
+st.push(c - &#39;0&#39;);
+} else {
+int val2 = st.pop();
+int val1 = st.pop();
+switch (c) {
+case &#39;+&#39;: st.push(val1 + val2); break;
+case &#39;-&#39;: st.push(val1 - val2); break;
+case &#39;*&#39;: st.push(val1 * val2); break;
+case &#39;/&#39;: st.push(val1 / val2); break;
+}
+}
+}
+return st.peek();
+}
+int main() {
+string postfix = &quot;231*+9-&quot;;
+cout &lt;&lt; evaluatePostfix(postfix) &lt;&lt; endl;
+return 0;
+
+}
+
+
+
+
+
+
+
+
+struct node {
+int info;
+struct node* link = NULL;
+};
+struct node* head = NULL;
+
+void reverse(struct node** head_ptr) {
+struct node* prev = NULL;
+struct node* current = *head_ptr;
+struct node* next = NULL;
+while (current != NULL) {
+next = current-&gt;link;
+current-&gt;link = prev;
+prev = current;
+current = next;
+}
+*head_ptr = prev;
+}
+
+bool compare(struct node* head1, struct node* head2) {
+while (head1 != NULL &amp;&amp; head2 != NULL) {
+if (head1->gt;info != head2->gt;info) {
+return false;
+}
+head1 = head1-&gt;link;
+head2 = head2-&gt;link;
+}
+return head1 == NULL &amp;&amp; head2 == NULL;
+ID 23AIML010 Page 9
+}
+
+bool isPalindrome(struct node* head_ptr) {
+struct node* slow = head_ptr;
+struct node* fast = head_ptr;
+struct node* prev = NULL;
+struct node* second_half = NULL;
+
+while (fast != NULL &amp;&amp; fast->gt;link != NULL) {
+fast = fast->gt;link->gt;link;
+prev = slow;
+slow = slow-&gt;link;
+}
+
+if (fast != NULL) {
+second_half = slow-&gt;link;
+} else {
+second_half = slow;
+}
+prev->gt;link = NULL;
+reverse(&amp;second_half);
+
+bool result = compare(head_ptr, second_half);
+reverse(&amp;second_half);
+prev->gt;link = second_half;
+
+return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vector<int> countSort(vector<int>& inputArray)
+{
+
+    int N = inputArray.size();
+
+    // Finding the maximum element of array inputArray[].
+    int M = 0;
+
+    for (int i = 0; i < N; i++)
+        M = max(M, inputArray[i]);
+
+    // Initializing countArray[] with 0
+    vector<int> countArray(M + 1, 0);
+
+    // Mapping each element of inputArray[] as an index
+    // of countArray[] array
+
+    for (int i = 0; i < N; i++)
+        countArray[inputArray[i]]++;
+
+    // Calculating prefix sum at every index
+    // of array countArray[]
+    for (int i = 1; i <= M; i++)
+        countArray[i] += countArray[i - 1];
+
+    // Creating outputArray[] from countArray[] array
+    vector<int> outputArray(N);
+
+    for (int i = N - 1; i >= 0; i--)
+
+    {
+        outputArray[countArray[inputArray[i]] - 1]
+            = inputArray[i];
+
+        countArray[inputArray[i]]--;
+    }
+
+    return outputArray;
+}
+
+
+
+
+
+
+void insertionSort(int arr[], int n)
+{
+    for (int i = 1; i < n; ++i) {
+        int key = arr[i];
+        int j = i - 1;
+
+        /* Move elements of arr[0..i-1], that are
+           greater than key, to one position ahead
+           of their current position */
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+void selectionSort(vector<int> &arr) {
+    int n = arr.size();
+
+    for (int i = 0; i < n - 1; ++i) {
+
+        // Assume the current position holds
+        // the minimum element
+        int min_idx = i;
+
+        // Iterate through the unsorted portion
+        // to find the actual minimum
+        for (int j = i + 1; j < n; ++j) {
+            if (arr[j] < arr[min_idx]) {
+
+                // Update min_idx if a smaller
+                // element is found
+                min_idx = j; 
+            }
+        }
+
+        // Move minimum element to its
+        // correct position
+        swap(arr[i], arr[min_idx]);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
